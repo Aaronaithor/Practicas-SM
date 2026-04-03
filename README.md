@@ -1,1 +1,1 @@
-Directorio en el que yo realizaré la práctica número 1 de Sistemas Multidimensionales.
+Directorio en el que realizaré la práctica número 1 de Sistemas Multidimensionales.
