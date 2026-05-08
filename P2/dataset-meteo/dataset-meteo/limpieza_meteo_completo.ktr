@@ -438,17 +438,17 @@
       <note>FASE 1 – ORIGEN: meteo.*
 A1: temp=-99 → NULL
 A2: precip&lt;0 → 0.0
-A3: humedad>100 → NULL
+A3: si humedad &lt; 0 → 0 si humedad > 100 → 100
 A4: normalizar ciudades
 A5: temp invertidas → swap
 A7: filas nulas → descarte
 A6: FK huérfanas → log staging
 A8: duplicados → dedup
 A9: vocab inválido → Desconocido</note>
-      <xloc>80</xloc>
-      <yloc>50</yloc>
-      <width>310</width>
-      <heigth>150</heigth>
+      <xloc>416</xloc>
+      <yloc>176</yloc>
+      <width>453</width>
+      <heigth>240</heigth>
       <fontname>Arial</fontname>
       <fontsize>10</fontsize>
       <fontbold>N</fontbold>
@@ -471,10 +471,10 @@ staging.observaciones_clean
   → idempotente (re-ejecutable)
 staging.etl_log_fk_huerfanas
   → log de errores A6</note>
-      <xloc>1620</xloc>
-      <yloc>50</yloc>
+      <xloc>1136</xloc>
+      <yloc>96</yloc>
       <width>300</width>
-      <heigth>100</heigth>
+      <heigth>148</heigth>
       <fontname>Arial</fontname>
       <fontsize>10</fontsize>
       <fontbold>N</fontbold>
@@ -498,10 +498,10 @@ olap_snow.dim_clima
   · es_dia_lluvia (BOOLEAN)
   · categoria_temperatura
   · anio, mes, dia_del_anio</note>
-      <xloc>1840</xloc>
-      <yloc>440</yloc>
-      <width>300</width>
-      <heigth>110</heigth>
+      <xloc>2000</xloc>
+      <yloc>96</yloc>
+      <width>303</width>
+      <heigth>171</heigth>
       <fontname>Arial</fontname>
       <fontsize>10</fontsize>
       <fontbold>N</fontbold>
@@ -591,7 +591,7 @@ olap_snow.dim_clima
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>PRACTICASSM</connection>
+    <connection>PracticasSM</connection>
     <sql>SELECT
     observacion_id,
     fecha,
@@ -612,7 +612,261 @@ ORDER BY observacion_id</sql>
     <variables_active>N</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
     <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta/>
+    <row-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>observacion_id</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>observacion_id</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Date</type>
+        <storagetype>normal</storagetype>
+        <name>fecha</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>fecha</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>ciudad</name>
+        <length>80</length>
+        <precision>-1</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>ciudad</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>estacion_id</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>estacion_id</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>temp_max</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>temp_max</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>temp_min</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>temp_min</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>temp_media</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>temp_media</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>precipitacion_mm</name>
+        <length>6</length>
+        <precision>1</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>precipitacion_mm</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>humedad_pct</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>humedad_pct</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>velocidad_viento_kmh</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>velocidad_viento_kmh</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>condicion_climatica</name>
+        <length>50</length>
+        <precision>-1</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>condicion_climatica</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+    </row-meta>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -622,8 +876,8 @@ ORDER BY observacion_id</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>80</xloc>
-      <yloc>200</yloc>
+      <xloc>464</xloc>
+      <yloc>464</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -654,9 +908,14 @@ if (precipitacion_mm != null &amp;&amp; precipitacion_mm &lt; 0) {
     precipitacion_mm = 0.0;
 }
 
-// ── A3: Humedad fuera de [0,100] → NULL ─────────────────────
+// ── A3: Humedad fuera de [0,100], para &lt;0 → 0 ; para >100 → 100 ─────────────────────
 if (humedad_pct != null &amp;&amp; (humedad_pct &lt; 0 || humedad_pct > 100)) {
-    humedad_pct = null;
+    if (humedad_pct &lt; 0){
+		humedad_pct = 0;
+	}
+	if (humedad_pct > 100){
+		humdedad_pct = 100;
+	}
 }
 
 // ── A5: Temperaturas invertidas → intercambiar ───────────────
@@ -755,8 +1014,8 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
       </output>
     </remotesteps>
     <GUI>
-      <xloc>288</xloc>
-      <yloc>192</yloc>
+      <xloc>736</xloc>
+      <yloc>464</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -809,8 +1068,8 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
       </output>
     </remotesteps>
     <GUI>
-      <xloc>520</xloc>
-      <yloc>200</yloc>
+      <xloc>976</xloc>
+      <yloc>464</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -825,7 +1084,7 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>PRACTICASSM</connection>
+    <connection>PracticasSM</connection>
     <cache>Y</cache>
     <cache_load_all>Y</cache_load_all>
     <cache_size>0</cache_size>
@@ -857,8 +1116,8 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
       </output>
     </remotesteps>
     <GUI>
-      <xloc>740</xloc>
-      <yloc>200</yloc>
+      <xloc>1152</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -901,8 +1160,8 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
       </output>
     </remotesteps>
     <GUI>
-      <xloc>960</xloc>
-      <yloc>160</yloc>
+      <xloc>1408</xloc>
+      <yloc>304</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -959,8 +1218,8 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1180</xloc>
-      <yloc>200</yloc>
+      <xloc>1600</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -998,8 +1257,8 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1392</xloc>
-      <yloc>272</yloc>
+      <xloc>1776</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1017,57 +1276,46 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
     <fields>
       <field>
         <name>observacion_id</name>
-        <rename/>
       </field>
       <field>
         <name>fecha</name>
-        <rename/>
       </field>
       <field>
         <name>ciudad</name>
-        <rename/>
       </field>
       <field>
         <name>estacion_id</name>
-        <rename/>
       </field>
       <field>
         <name>temp_max</name>
-        <rename/>
         <length>5</length>
         <precision>1</precision>
       </field>
       <field>
         <name>temp_min</name>
-        <rename/>
         <length>5</length>
         <precision>1</precision>
       </field>
       <field>
         <name>temp_media</name>
-        <rename/>
         <length>5</length>
         <precision>1</precision>
       </field>
       <field>
         <name>precipitacion_mm</name>
-        <rename/>
         <length>6</length>
         <precision>1</precision>
       </field>
       <field>
         <name>humedad_pct</name>
-        <rename/>
       </field>
       <field>
         <name>velocidad_viento_kmh</name>
-        <rename/>
         <length>5</length>
         <precision>1</precision>
       </field>
       <field>
         <name>condicion_climatica</name>
-        <rename/>
       </field>
       <select_unspecified>N</select_unspecified>
     </fields>
@@ -1080,8 +1328,8 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1600</xloc>
-      <yloc>240</yloc>
+      <xloc>2096</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1096,7 +1344,7 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>PRACTICASSM</connection>
+    <connection>PracticasSM</connection>
     <commit>1000</commit>
     <update_bypassed>N</update_bypassed>
     <lookup>
@@ -1179,8 +1427,8 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1840</xloc>
-      <yloc>200</yloc>
+      <xloc>2096</xloc>
+      <yloc>528</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1195,7 +1443,7 @@ if (condicion_climatica == null || condicion_climatica.trim() == '' || vocab.ind
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>PRACTICASSM</connection>
+    <connection>PracticasSM</connection>
     <sql>SELECT
     oc.observacion_id,
     oc.fecha,
@@ -1227,7 +1475,629 @@ ORDER BY oc.fecha, oc.ciudad</sql>
     <variables_active>N</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
     <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta/>
+    <row-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>observacion_id</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>observacion_id</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>Y</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Date</type>
+        <storagetype>normal</storagetype>
+        <name>fecha</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>fecha</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>ciudad</name>
+        <length>80</length>
+        <precision>-1</precision>
+        <origin>02 - Limpieza JS (A1-A5, A9)</origin>
+        <comments>ciudad</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>estacion_id</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>01 - Leer meteo.observaciones_diarias</origin>
+        <comments>estacion_id</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>temp_max</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>08 - Select Values (columnas finales)</origin>
+        <comments>temp_max</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>temp_min</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>08 - Select Values (columnas finales)</origin>
+        <comments>temp_min</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>temp_media</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>08 - Select Values (columnas finales)</origin>
+        <comments>temp_media</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>precipitacion_mm</name>
+        <length>6</length>
+        <precision>1</precision>
+        <origin>08 - Select Values (columnas finales)</origin>
+        <comments>precipitacion_mm</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>humedad_pct</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>02 - Limpieza JS (A1-A5, A9)</origin>
+        <comments>humedad_pct</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>velocidad_viento_kmh</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>08 - Select Values (columnas finales)</origin>
+        <comments>velocidad_viento_kmh</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>condicion_climatica</name>
+        <length>50</length>
+        <precision>-1</precision>
+        <origin>02 - Limpieza JS (A1-A5, A9)</origin>
+        <comments>condicion_climatica</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>observacion_id_1</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>observacion_id</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Date</type>
+        <storagetype>normal</storagetype>
+        <name>fecha_1</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>fecha</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>ciudad_1</name>
+        <length>80</length>
+        <precision>-1</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>ciudad</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>estacion_id_1</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>estacion_id</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>temp_max_1</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>temp_max</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>temp_min_1</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>temp_min</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>temp_media_1</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>temp_media</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>precipitacion_mm_1</name>
+        <length>6</length>
+        <precision>1</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>precipitacion_mm</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>humedad_pct_1</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>humedad_pct</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Number</type>
+        <storagetype>normal</storagetype>
+        <name>velocidad_viento_kmh_1</name>
+        <length>5</length>
+        <precision>1</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>velocidad_viento_kmh</comments>
+        <conversion_Mask>####0.0#########;-####0.0#########</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>condicion_climatica_1</name>
+        <length>50</length>
+        <precision>-1</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>condicion_climatica</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>anio</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>anio</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>mes</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>mes</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>dia_del_anio</name>
+        <length>9</length>
+        <precision>0</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>dia_del_anio</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Boolean</type>
+        <storagetype>normal</storagetype>
+        <name>es_dia_lluvia</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>es_dia_lluvia</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>categoria_temperatura</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>10 - Leer staging.observaciones_clean</origin>
+        <comments>categoria_temperatura</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>es_ES</date_format_locale>
+        <date_format_timezone>Europe/Madrid</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+    </row-meta>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1237,8 +2107,8 @@ ORDER BY oc.fecha, oc.ciudad</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1840</xloc>
-      <yloc>340</yloc>
+      <xloc>2096</xloc>
+      <yloc>688</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1253,7 +2123,7 @@ ORDER BY oc.fecha, oc.ciudad</sql>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>PRACTICASSM</connection>
+    <connection>PracticasSM</connection>
     <commit>1000</commit>
     <update_bypassed>N</update_bypassed>
     <lookup>
@@ -1341,8 +2211,8 @@ ORDER BY oc.fecha, oc.ciudad</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>2048</xloc>
-      <yloc>304</yloc>
+      <xloc>2096</xloc>
+      <yloc>864</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1366,8 +2236,8 @@ ORDER BY oc.fecha, oc.ciudad</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>520</xloc>
-      <yloc>340</yloc>
+      <xloc>1120</xloc>
+      <yloc>576</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1382,14 +2252,14 @@ ORDER BY oc.fecha, oc.ciudad</sql>
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>PRACTICASSM</connection>
+    <connection>PracticasSM</connection>
     <schema>staging</schema>
     <table>etl_log_fk_huerfanas</table>
     <commit>100</commit>
     <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
-    <specify_fields>N</specify_fields>
+    <specify_fields>Y</specify_fields>
     <partitioning_enabled>N</partitioning_enabled>
     <partitioning_field/>
     <partitioning_daily>N</partitioning_daily>
@@ -1400,6 +2270,26 @@ ORDER BY oc.fecha, oc.ciudad</sql>
     <return_keys>N</return_keys>
     <return_field/>
     <fields>
+      <field>
+        <column_name>observacion_id</column_name>
+        <stream_name>observacion_id</stream_name>
+      </field>
+      <field>
+        <column_name>fecha</column_name>
+        <stream_name>fecha</stream_name>
+      </field>
+      <field>
+        <column_name>ciudad</column_name>
+        <stream_name>ciudad</stream_name>
+      </field>
+      <field>
+        <column_name>estacion_id</column_name>
+        <stream_name>estacion_id</stream_name>
+      </field>
+      <field>
+        <column_name>lkp_estacion</column_name>
+        <stream_name>lkp_estacion</stream_name>
+      </field>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -1410,8 +2300,8 @@ ORDER BY oc.fecha, oc.ciudad</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>960</xloc>
-      <yloc>340</yloc>
+      <xloc>1600</xloc>
+      <yloc>448</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
