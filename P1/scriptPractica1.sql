@@ -156,44 +156,6 @@ estado VARCHAR(50)
 
 CREATE INDEX idx_pago_factura ON oltp_pagos.pagos(factura_id);
 
--- Datos de prueba
-
-INSERT INTO oltp_clientes.clientes (nombre,email,telefono,fecha_registro) VALUES
-('Juan Perez','[juan@test.com](mailto:juan@test.com)','+34-600000001','2023-01-01'),
-('Maria Lopez','[maria@test.com](mailto:maria@test.com)','+34-600000002','2023-02-01');
-
-INSERT INTO oltp_catalogo.categorias (nombre) VALUES ('Electrónica'),('Ropa');
-
-INSERT INTO oltp_catalogo.proveedores (nombre,contacto) VALUES
-('Proveedor1','[prov1@test.com](mailto:prov1@test.com)'),
-('Proveedor2','[prov2@test.com](mailto:prov2@test.com)');
-
-INSERT INTO oltp_catalogo.productos (nombre,categoria_id,proveedor_id,precio) VALUES
-('Laptop',1,1,1000),
-('Camiseta',2,2,20);
-
-INSERT INTO oltp_pedidos.estados_pedido (nombre) VALUES ('Pendiente'),('Enviado');
-
-INSERT INTO oltp_pedidos.pedidos (cliente_id,fecha_pedido,estado_id) VALUES
-(1,'2024-01-01',1);
-
-INSERT INTO oltp_pedidos.lineas_pedido (pedido_id,producto_id,cantidad,precio_unitario) VALUES
-(1,1,1,1000);
-
-INSERT INTO oltp_envios.transportistas (nombre,zona) VALUES
-('Correos','España');
-
-INSERT INTO oltp_envios.envios (pedido_id,transportista_id,fecha_envio,coste) VALUES
-(1,1,'2024-01-02',10);
-
-INSERT INTO oltp_pagos.metodos_pago (nombre) VALUES ('Tarjeta');
-
-INSERT INTO oltp_pagos.facturas (pedido_id,total,fecha) VALUES
-(1,1010,'2024-01-01');
-
-INSERT INTO oltp_pagos.pagos (factura_id,metodo_id,fecha,cantidad) VALUES
-(1,1,'2024-01-01',1010);
-
 -- DATOS FINALES
 
 -- CLIENTES (100)
@@ -363,14 +325,16 @@ CREATE TABLE datawarehouse.dim_cliente (
     cliente_id INT PRIMARY KEY,
     nombre VARCHAR(100),
     ciudad VARCHAR(50),
-    pais VARCHAR(50)
+    pais VARCHAR(50),
+    email VARCHAR(100) UNIQUE NOT NULL
 );
 
 CREATE TABLE datawarehouse.dim_producto (
     producto_id INT PRIMARY KEY,
     nombre VARCHAR(100),
     categoria VARCHAR(100),
-    proveedor VARCHAR(100)
+    proveedor VARCHAR(100),
+    precio NUMERIC(10,2) CHECK (precio > 0)
 );
 
 CREATE TABLE datawarehouse.dim_estado_pedido (
@@ -410,7 +374,8 @@ SELECT DISTINCT
     c.cliente_id,
     c.nombre,
     d.ciudad,
-    d.pais
+    d.pais,
+    c.email
 FROM oltp_clientes.clientes c
 LEFT JOIN oltp_clientes.direcciones d
 ON c.cliente_id = d.cliente_id;
