@@ -61,4 +61,3 @@ CREATE TABLE staging.fechas_clean (
     mes INT,
     anio INT
 );
-
