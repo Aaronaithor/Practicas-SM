@@ -158,155 +158,331 @@ CREATE INDEX idx_pago_factura ON oltp_pagos.pagos(factura_id);
 
 -- DATOS FINALES
 
--- CLIENTES (100)
+-- =========================
+-- CLIENTES (200)
+-- =========================
 INSERT INTO oltp_clientes.clientes (nombre, email, telefono, fecha_registro)
 SELECT
-'Cliente_' || i,
-'cliente' || i || '@mail.com',
-'+34-600' || LPAD(i::text,6,'0'),
-DATE '2023-01-01' + (i % 365)
-FROM generate_series(1,100) i;
+    CASE
+        WHEN i % 5 = 0 THEN 'Carlos'
+        WHEN i % 5 = 1 THEN 'Lucia'
+        WHEN i % 5 = 2 THEN 'Miguel'
+        WHEN i % 5 = 3 THEN 'Sara'
+        ELSE 'David'
+    END || '_' || i,
+    'cliente' || i || '@mail.com',
+    '+34-6' || LPAD((60000000 + i)::text,8,'0'),
+    DATE '2021-01-01' + ((random() * 1500)::INT)
+FROM generate_series(1,200) i;
 
--- DIRECCIONES (100)
+-- =========================
+-- DIRECCIONES
+-- =========================
 INSERT INTO oltp_clientes.direcciones (cliente_id, direccion, ciudad, region, pais)
 SELECT
-i,
-'Calle Falsa ' || i,
-CASE WHEN i % 5 = 0 THEN 'Madrid'
-WHEN i % 5 = 1 THEN 'Barcelona'
-WHEN i % 5 = 2 THEN 'Sevilla'
-WHEN i % 5 = 3 THEN 'Valencia'
-ELSE 'Bilbao' END,
-'España',
-'España'
-FROM generate_series(1,100) i;
+    i,
+    CASE
+        WHEN i % 4 = 0 THEN 'Avenida'
+        WHEN i % 4 = 1 THEN 'Calle'
+        WHEN i % 4 = 2 THEN 'Plaza'
+        ELSE 'Paseo'
+    END || ' ' ||
+    CASE
+        WHEN i % 6 = 0 THEN 'del Sol'
+        WHEN i % 6 = 1 THEN 'de la Paz'
+        WHEN i % 6 = 2 THEN 'Real'
+        WHEN i % 6 = 3 THEN 'Gran Via'
+        WHEN i % 6 = 4 THEN 'de Andalucia'
+        ELSE 'de Castilla'
+    END || ' ' || i,
 
+    CASE
+        WHEN i % 10 = 0 THEN 'Madrid'
+        WHEN i % 10 = 1 THEN 'Barcelona'
+        WHEN i % 10 = 2 THEN 'Sevilla'
+        WHEN i % 10 = 3 THEN 'Valencia'
+        WHEN i % 10 = 4 THEN 'Bilbao'
+        WHEN i % 10 = 5 THEN 'Malaga'
+        WHEN i % 10 = 6 THEN 'Granada'
+        WHEN i % 10 = 7 THEN 'Zaragoza'
+        WHEN i % 10 = 8 THEN 'Murcia'
+        ELSE 'A Coruña'
+    END,
+
+    CASE
+        WHEN i % 5 = 0 THEN 'Andalucia'
+        WHEN i % 5 = 1 THEN 'Cataluña'
+        WHEN i % 5 = 2 THEN 'Madrid'
+        WHEN i % 5 = 3 THEN 'Comunidad Valenciana'
+        ELSE 'Pais Vasco'
+    END,
+
+    'España'
+FROM generate_series(1,200) i;
+
+-- =========================
 -- SEGMENTOS
+-- =========================
 INSERT INTO oltp_clientes.segmentos (nombre)
-VALUES ('Premium'), ('Estandar'), ('Ocasional');
+VALUES
+('Premium'),
+('Estandar'),
+('Ocasional'),
+('Empresa'),
+('VIP');
 
+-- =========================
 -- HISTORIAL CLIENTES
+-- =========================
 INSERT INTO oltp_clientes.historial_clientes (cliente_id, segmento_id, fecha_inicio)
 SELECT
-i,
-(i % 3) + 1,
-DATE '2023-01-01' + (i % 365)
-FROM generate_series(1,100) i;
+    i,
+    (i % 5) + 1,
+    DATE '2021-01-01' + ((random() * 1500)::INT)
+FROM generate_series(1,200) i;
 
+-- =========================
 -- CATEGORIAS
+-- =========================
 INSERT INTO oltp_catalogo.categorias (nombre)
-VALUES ('Electrónica'), ('Ropa'), ('Hogar'), ('Deporte');
+VALUES
+('Electrónica'),
+('Ropa'),
+('Hogar'),
+('Deporte'),
+('Videojuegos'),
+('Juguetes'),
+('Libros'),
+('Belleza'),
+('Alimentación'),
+('Automoción');
 
--- PROVEEDORES (20)
+-- =========================
+-- PROVEEDORES (40)
+-- =========================
 INSERT INTO oltp_catalogo.proveedores (nombre, contacto)
 SELECT
-'Proveedor_' || i,
-'proveedor' || i || '@mail.com'
-FROM generate_series(1,20) i;
+    CASE
+        WHEN i % 5 = 0 THEN 'TechSupplier'
+        WHEN i % 5 = 1 THEN 'GlobalMarket'
+        WHEN i % 5 = 2 THEN 'DistribucionesPlus'
+        WHEN i % 5 = 3 THEN 'EuroTrade'
+        ELSE 'MegaStore'
+    END || '_' || i,
 
--- PRODUCTOS (100)
+    'contacto' || i || '@proveedor.com'
+FROM generate_series(1,40) i;
+
+-- =========================
+-- PRODUCTOS (300)
+-- =========================
 INSERT INTO oltp_catalogo.productos (nombre, categoria_id, proveedor_id, precio)
 SELECT
-'Producto_' || i,
-(i % 4) + 1,
-(i % 20) + 1,
-(random() * 100 + 5)::NUMERIC(10,2)
-FROM generate_series(1,100) i;
+    CASE
+        WHEN i % 10 = 0 THEN 'Smartphone'
+        WHEN i % 10 = 1 THEN 'Camiseta'
+        WHEN i % 10 = 2 THEN 'Silla'
+        WHEN i % 10 = 3 THEN 'Bicicleta'
+        WHEN i % 10 = 4 THEN 'Consola'
+        WHEN i % 10 = 5 THEN 'Libro'
+        WHEN i % 10 = 6 THEN 'Perfume'
+        WHEN i % 10 = 7 THEN 'Chocolate'
+        WHEN i % 10 = 8 THEN 'Neumatico'
+        ELSE 'Auriculares'
+    END || '_' || i,
 
--- STOCK (100)
+    (i % 10) + 1,
+    (i % 40) + 1,
+
+    CASE
+        WHEN i % 10 = 0 THEN (random() * 900 + 100)::NUMERIC(10,2)
+        WHEN i % 10 = 1 THEN (random() * 40 + 5)::NUMERIC(10,2)
+        WHEN i % 10 = 2 THEN (random() * 300 + 50)::NUMERIC(10,2)
+        WHEN i % 10 = 3 THEN (random() * 1000 + 150)::NUMERIC(10,2)
+        WHEN i % 10 = 4 THEN (random() * 500 + 200)::NUMERIC(10,2)
+        ELSE (random() * 150 + 10)::NUMERIC(10,2)
+    END
+FROM generate_series(1,300) i;
+
+-- =========================
+-- STOCK
+-- =========================
 INSERT INTO oltp_catalogo.stock (producto_id, cantidad)
 SELECT
-i,
-(random() * 100)::INT
-FROM generate_series(1,100) i;
+    i,
+    (random() * 500)::INT
+FROM generate_series(1,300) i;
 
+-- =========================
 -- ESTADOS PEDIDO
+-- =========================
 INSERT INTO oltp_pedidos.estados_pedido (nombre)
-VALUES ('Pendiente'), ('Enviado'), ('Entregado'), ('Cancelado');
+VALUES
+('Pendiente'),
+('Preparando'),
+('Enviado'),
+('Entregado'),
+('Cancelado'),
+('Devuelto');
 
--- PEDIDOS (100)
+-- =========================
+-- PEDIDOS (500)
+-- =========================
 INSERT INTO oltp_pedidos.pedidos (cliente_id, fecha_pedido, estado_id)
 SELECT
-(random() * 99 + 1)::INT,
-DATE '2024-01-01' + (i % 365),
-(random() * 3 + 1)::INT
-FROM generate_series(1,100) i;
+    (random() * 199 + 1)::INT,
 
--- LINEAS PEDIDO (300)
-INSERT INTO oltp_pedidos.lineas_pedido (pedido_id, producto_id, cantidad, precio_unitario)
+    TIMESTAMP '2022-01-01 00:00:00'
+    + ((random() * 1400)::INT || ' days')::INTERVAL
+    + ((random() * 23)::INT || ' hours')::INTERVAL,
+
+    (random() * 5 + 1)::INT
+FROM generate_series(1,500);
+
+-- =========================
+-- LINEAS PEDIDO (1500)
+-- =========================
+INSERT INTO oltp_pedidos.lineas_pedido
+(pedido_id, producto_id, cantidad, precio_unitario)
 SELECT
-(random() * 99 + 1)::INT,
-(random() * 99 + 1)::INT,
-(random() * 5 + 1)::INT,
-(random() * 100 + 5)::NUMERIC(10,2)
-FROM generate_series(1,300);
+    (random() * 499 + 1)::INT,
+    (random() * 299 + 1)::INT,
 
--- DEVOLUCIONES (50)
+    CASE
+        WHEN random() < 0.7 THEN (random() * 3 + 1)::INT
+        ELSE (random() * 10 + 1)::INT
+    END,
+
+    (random() * 1000 + 5)::NUMERIC(10,2)
+FROM generate_series(1,1500);
+
+-- =========================
+-- DEVOLUCIONES (120)
+-- =========================
 INSERT INTO oltp_pedidos.devoluciones (linea_id, cantidad, fecha)
 SELECT
-(random() * 299 + 1)::INT,
-1,
-DATE '2024-06-01' + (i % 30)
-FROM generate_series(1,50) i;
+    (random() * 1499 + 1)::INT,
+    (random() * 3 + 1)::INT,
 
+    DATE '2022-01-01' + ((random() * 1400)::INT)
+FROM generate_series(1,120);
+
+-- =========================
 -- TRANSPORTISTAS
+-- =========================
 INSERT INTO oltp_envios.transportistas (nombre, zona)
 VALUES
 ('Correos','España'),
 ('SEUR','Europa'),
-('DHL','Internacional');
+('DHL','Internacional'),
+('UPS','Internacional'),
+('MRW','España'),
+('FedEx','Global');
 
--- ENVIOS (100)
-INSERT INTO oltp_envios.envios (pedido_id, transportista_id, fecha_envio, fecha_entrega, coste)
+-- =========================
+-- ENVIOS
+-- =========================
+INSERT INTO oltp_envios.envios
+(pedido_id, transportista_id, fecha_envio, fecha_entrega, coste)
 SELECT
-pedido_id,
-(random() * 2 + 1)::INT,
-fecha_pedido + 1,
-fecha_pedido + ((random() * 5)::INT + 2),
-(random() * 20 + 5)::NUMERIC(10,2)
+    pedido_id,
+
+    (random() * 5 + 1)::INT,
+
+    fecha_pedido + ((random() * 3)::INT || ' days')::INTERVAL,
+
+    fecha_pedido + ((random() * 10 + 2)::INT || ' days')::INTERVAL,
+
+    CASE
+        WHEN random() < 0.5 THEN (random() * 10 + 3)::NUMERIC(10,2)
+        ELSE (random() * 50 + 10)::NUMERIC(10,2)
+    END
 FROM oltp_pedidos.pedidos;
 
--- INCIDENCIAS (30)
+-- =========================
+-- INCIDENCIAS
+-- =========================
 INSERT INTO oltp_envios.incidencias (envio_id, descripcion, fecha)
 SELECT
-(random() * 99 + 1)::INT,
-'Retraso en entrega',
-DATE '2024-06-01' + (i % 30)
-FROM generate_series(1,30) i;
+    (random() * 499 + 1)::INT,
 
+    CASE
+        WHEN i % 5 = 0 THEN 'Retraso en entrega'
+        WHEN i % 5 = 1 THEN 'Paquete dañado'
+        WHEN i % 5 = 2 THEN 'Direccion incorrecta'
+        WHEN i % 5 = 3 THEN 'Cliente ausente'
+        ELSE 'Problema logistico'
+    END,
+
+    DATE '2022-01-01' + ((random() * 1400)::INT)
+FROM generate_series(1,150) i;
+
+-- =========================
 -- RUTAS
+-- =========================
 INSERT INTO oltp_envios.rutas (origen, destino)
 VALUES
 ('Madrid','Barcelona'),
 ('Sevilla','Valencia'),
-('Bilbao','Madrid');
+('Bilbao','Madrid'),
+('Granada','Malaga'),
+('Murcia','Zaragoza'),
+('A Coruña','Bilbao'),
+('Valencia','Barcelona');
 
+-- =========================
 -- METODOS PAGO
+-- =========================
 INSERT INTO oltp_pagos.metodos_pago (nombre)
-VALUES ('Tarjeta'), ('PayPal'), ('Transferencia');
+VALUES
+('Tarjeta'),
+('PayPal'),
+('Transferencia'),
+('Bizum'),
+('Apple Pay'),
+('Google Pay');
 
--- FACTURAS (100)
+-- =========================
+-- FACTURAS
+-- =========================
 INSERT INTO oltp_pagos.facturas (pedido_id, total, fecha)
 SELECT
-pedido_id,
-(random() * 200 + 20)::NUMERIC(10,2),
-fecha_pedido
+    pedido_id,
+
+    CASE
+        WHEN random() < 0.6 THEN (random() * 150 + 20)::NUMERIC(10,2)
+        WHEN random() < 0.9 THEN (random() * 600 + 150)::NUMERIC(10,2)
+        ELSE (random() * 3000 + 1000)::NUMERIC(10,2)
+    END,
+
+    fecha_pedido
 FROM oltp_pedidos.pedidos;
 
--- PAGOS (100)
+-- =========================
+-- PAGOS
+-- =========================
 INSERT INTO oltp_pagos.pagos (factura_id, metodo_id, fecha, cantidad)
 SELECT
-factura_id,
-(random() * 2 + 1)::INT,
-fecha,
-total
+    factura_id,
+    (random() * 5 + 1)::INT,
+
+    fecha + ((random() * 5)::INT || ' days')::INTERVAL,
+
+    total
 FROM oltp_pagos.facturas;
 
--- TRANSACCIONES (100)
+-- =========================
+-- TRANSACCIONES
+-- =========================
 INSERT INTO oltp_pagos.transacciones (pago_id, estado)
 SELECT
-pago_id,
-CASE WHEN random() > 0.1 THEN 'Completado' ELSE 'Fallido' END
+    pago_id,
+
+    CASE
+        WHEN random() > 0.92 THEN 'Fallido'
+        WHEN random() > 0.85 THEN 'Pendiente'
+        ELSE 'Completado'
+    END
 FROM oltp_pagos.pagos;
 
 -- DATA WAREHOUSE
@@ -428,59 +604,147 @@ LEFT JOIN oltp_envios.envios e ON p.pedido_id = e.pedido_id;
 
 -- Consultas OLTP
 
--- Ventas totales por cliente
+-- 1. Evolución de ingresos por categoría a lo largo del tiempo (mes/año)
+-- Pregunta analítica 1
 SELECT 
-    c.nombre,
-    SUM(lp.cantidad * lp.precio_unitario) AS total_ventas
-FROM oltp_clientes.clientes c
-JOIN oltp_pedidos.pedidos p ON c.cliente_id = p.cliente_id
-JOIN oltp_pedidos.lineas_pedido lp ON p.pedido_id = lp.pedido_id
-GROUP BY c.nombre
-ORDER BY total_ventas DESC;
-
--- Ventas por categoría
-SELECT 
-    cat.nombre,
-    SUM(lp.cantidad * lp.precio_unitario) AS total
-FROM oltp_pedidos.lineas_pedido lp
-JOIN oltp_catalogo.productos p ON lp.producto_id = p.producto_id
-JOIN oltp_catalogo.categorias cat ON p.categoria_id = cat.categoria_id
-GROUP BY cat.nombre;
-
--- Ventas por mes
-SELECT 
-    DATE_TRUNC('month', p.fecha_pedido) AS mes,
-    SUM(lp.cantidad * lp.precio_unitario) AS total
+    EXTRACT(YEAR FROM p.fecha_pedido) AS anio,
+    EXTRACT(MONTH FROM p.fecha_pedido) AS mes,
+    cat.nombre AS categoria,
+    SUM(lp.cantidad * lp.precio_unitario) AS ingresos_totales
 FROM oltp_pedidos.pedidos p
 JOIN oltp_pedidos.lineas_pedido lp ON p.pedido_id = lp.pedido_id
-GROUP BY mes
-ORDER BY mes;
+JOIN oltp_catalogo.productos prod ON lp.producto_id = prod.producto_id
+JOIN oltp_catalogo.categorias cat ON prod.categoria_id = cat.categoria_id
+GROUP BY anio, mes, cat.nombre
+ORDER BY anio, mes, cat.nombre;
+
+-- 2. Top clientes por ingresos y su región (país/ciudad)
+-- Pregunta analítica 2
+SELECT 
+    c.nombre,
+    d.pais,
+    d.ciudad,
+    SUM(lp.cantidad * lp.precio_unitario) AS total_ingresos,
+    COUNT(DISTINCT p.pedido_id) AS numero_pedidos
+FROM oltp_clientes.clientes c
+JOIN oltp_clientes.direcciones d ON c.cliente_id = d.cliente_id
+JOIN oltp_pedidos.pedidos p ON c.cliente_id = p.cliente_id
+JOIN oltp_pedidos.lineas_pedido lp ON p.pedido_id = lp.pedido_id
+GROUP BY c.cliente_id, c.nombre, d.pais, d.ciudad
+ORDER BY total_ingresos DESC
+LIMIT 20;
+
+-- 3. Relación transportista - valor medio de pedido
+-- Pregunta analítica 3
+SELECT 
+    t.nombre AS transportista,
+    AVG(lp.cantidad * lp.precio_unitario) AS valor_medio_pedido,
+    SUM(lp.cantidad * lp.precio_unitario) AS ingresos_totales,
+    COUNT(DISTINCT p.pedido_id) AS num_pedidos
+FROM oltp_envios.envios e
+JOIN oltp_envios.transportistas t ON e.transportista_id = t.transportista_id
+JOIN oltp_pedidos.pedidos p ON e.pedido_id = p.pedido_id
+JOIN oltp_pedidos.lineas_pedido lp ON p.pedido_id = lp.pedido_id
+GROUP BY t.transportista_id, t.nombre
+ORDER BY valor_medio_pedido DESC;
+
+-- 4. Volumen de ventas (ingresos y cantidad) por estado del pedido
+-- Pregunta analítica 4
+SELECT 
+    ep.nombre AS estado_pedido,
+    SUM(lp.cantidad * lp.precio_unitario) AS ingresos_totales,
+    SUM(lp.cantidad) AS unidades_vendidas,
+    COUNT(lp.linea_id) AS numero_lineas_pedido
+FROM oltp_pedidos.pedidos p
+JOIN oltp_pedidos.estados_pedido ep ON p.estado_id = ep.estado_id
+JOIN oltp_pedidos.lineas_pedido lp ON p.pedido_id = lp.pedido_id
+GROUP BY ep.estado_id, ep.nombre
+ORDER BY ingresos_totales DESC;
+
+-- 5. Top productos más vendidos (ingresos y unidades) por categoría
+-- Pregunta analítica 5
+SELECT 
+    cat.nombre AS categoria,
+    prod.nombre AS producto,
+    SUM(lp.cantidad * lp.precio_unitario) AS ingresos_totales,
+    SUM(lp.cantidad) AS unidades_vendidas
+FROM oltp_pedidos.lineas_pedido lp
+JOIN oltp_catalogo.productos prod ON lp.producto_id = prod.producto_id
+JOIN oltp_catalogo.categorias cat ON prod.categoria_id = cat.categoria_id
+GROUP BY cat.nombre, prod.producto_id, prod.nombre
+ORDER BY cat.nombre, ingresos_totales DESC;
+
 
 -- Consultas OLAP
--- Ventas por cliente
-SELECT 
-    dc.nombre,
-    SUM(hv.importe) AS total
-FROM datawarehouse.hechos_ventas hv
-JOIN datawarehouse.dim_cliente dc ON hv.cliente_id = dc.cliente_id
-GROUP BY dc.nombre
-ORDER BY total DESC;
 
--- Ventas por categoría
-SELECT 
-    dp.categoria,
-    SUM(hv.importe) AS total
-FROM datawarehouse.hechos_ventas hv
-JOIN datawarehouse.dim_producto dp ON hv.producto_id = dp.producto_id
-GROUP BY dp.categoria;
+-- 1. Evolución de ingresos por categoría a lo largo del tiempo (mes/año)
+-- Pregunta analítica 1
 
--- Ventas por mes
 SELECT 
-    df.mes,
     df.anio,
-    SUM(hv.importe) AS total
+    df.mes,
+    dp.categoria,
+    SUM(hv.importe) AS ingresos_totales
 FROM datawarehouse.hechos_ventas hv
 JOIN datawarehouse.dim_fecha df ON hv.fecha_id = df.fecha_id
-GROUP BY df.mes, df.anio
-ORDER BY df.anio, df.mes;
+JOIN datawarehouse.dim_producto dp ON hv.producto_id = dp.producto_id
+GROUP BY df.anio, df.mes, dp.categoria
+ORDER BY df.anio, df.mes, dp.categoria;
+
+
+-- 2. Top clientes por ingresos y su región (país/ciudad)
+-- Pregunta analítica 2
+SELECT 
+    dc.nombre,
+    dc.pais,
+    dc.ciudad,
+    SUM(hv.importe) AS total_ingresos,
+    COUNT(DISTINCT hv.hecho_id) AS numero_transacciones   -- opcional
+FROM datawarehouse.hechos_ventas hv
+JOIN datawarehouse.dim_cliente dc ON hv.cliente_id = dc.cliente_id
+GROUP BY dc.cliente_id, dc.nombre, dc.pais, dc.ciudad
+ORDER BY total_ingresos DESC
+LIMIT 20;   -- Top 20 clientes
+
+
+-- 3. Relación transportista - valor medio de pedido
+-- Pregunta analítica 3
+
+SELECT 
+    dt.nombre AS transportista,
+    AVG(hv.importe) AS valor_medio_pedido,
+    SUM(hv.importe) AS ingresos_totales,
+    COUNT(hv.hecho_id) AS num_pedidos
+FROM datawarehouse.hechos_ventas hv
+JOIN datawarehouse.dim_transportista dt ON hv.transportista_id = dt.transportista_id
+GROUP BY dt.transportista_id, dt.nombre
+ORDER BY valor_medio_pedido DESC;
+
+
+-- 4. Volumen de ventas (ingresos y cantidad) por estado del pedido
+-- Pregunta analítica 4
+
+SELECT 
+    de.nombre AS estado_pedido,
+    SUM(hv.importe) AS ingresos_totales,
+    SUM(hv.cantidad) AS unidades_vendidas,
+    COUNT(hv.hecho_id) AS numero_lineas_pedido
+FROM datawarehouse.hechos_ventas hv
+JOIN datawarehouse.dim_estado_pedido de ON hv.estado_id = de.estado_id
+GROUP BY de.estado_id, de.nombre
+ORDER BY ingresos_totales DESC;
+
+
+-- 5. Top productos más vendidos (ingresos y unidades) por categoría
+-- Pregunta analítica 5
+
+SELECT 
+    dp.categoria,
+    dp.nombre AS producto,
+    SUM(hv.importe) AS ingresos_totales,
+    SUM(hv.cantidad) AS unidades_vendidas
+FROM datawarehouse.hechos_ventas hv
+JOIN datawarehouse.dim_producto dp ON hv.producto_id = dp.producto_id
+GROUP BY dp.categoria, dp.producto_id, dp.nombre
+ORDER BY dp.categoria, ingresos_totales DESC;
 
