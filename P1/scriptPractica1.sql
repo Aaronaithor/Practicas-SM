@@ -498,19 +498,23 @@ CREATE TABLE datawarehouse.dim_fecha (
 );
 
 CREATE TABLE datawarehouse.dim_cliente (
-    cliente_id INT PRIMARY KEY,
+    sk_cliente_id SERIAL,
+    cliente_id INT,
     nombre VARCHAR(100),
     ciudad VARCHAR(50),
     pais VARCHAR(50),
-    email VARCHAR(100) UNIQUE NOT NULL
+    email VARCHAR(100) UNIQUE NOT NULL,
+    PRIMARY KEY (sk_cliente_id)
 );
 
 CREATE TABLE datawarehouse.dim_producto (
-    producto_id INT PRIMARY KEY,
+    sk_producto_id SERIAL,
+    producto_id INT,
     nombre VARCHAR(100),
     categoria VARCHAR(100),
     proveedor VARCHAR(100),
-    precio NUMERIC(10,2) CHECK (precio > 0)
+    precio NUMERIC(10,2) CHECK (precio > 0),
+    PRIMARY KEY (sk_producto_id)
 );
 
 CREATE TABLE datawarehouse.dim_estado_pedido (
@@ -519,9 +523,11 @@ CREATE TABLE datawarehouse.dim_estado_pedido (
 );
 
 CREATE TABLE datawarehouse.dim_transportista (
-    transportista_id INT PRIMARY KEY,
+    sk_transportista_id SERIAL,
+    transportista_id INT,
     nombre VARCHAR(100),
-    zona VARCHAR(50)
+    zona VARCHAR(50),
+    PRIMARY KEY (sk_transportista_id)
 );
 
 CREATE TABLE datawarehouse.hechos_ventas (
@@ -536,11 +542,11 @@ CREATE TABLE datawarehouse.hechos_ventas (
     cantidad INT,
     importe NUMERIC(10,2),
 
-    FOREIGN KEY (cliente_id) REFERENCES datawarehouse.dim_cliente(cliente_id),
-    FOREIGN KEY (producto_id) REFERENCES datawarehouse.dim_producto(producto_id),
+    FOREIGN KEY (cliente_id) REFERENCES datawarehouse.dim_cliente(sk_cliente_id),
+    FOREIGN KEY (producto_id) REFERENCES datawarehouse.dim_producto(sk_producto_id),
     FOREIGN KEY (fecha_id) REFERENCES datawarehouse.dim_fecha(fecha_id),
     FOREIGN KEY (estado_id) REFERENCES datawarehouse.dim_estado_pedido(estado_id),
-    FOREIGN KEY (transportista_id) REFERENCES datawarehouse.dim_transportista(transportista_id)
+    FOREIGN KEY (transportista_id) REFERENCES datawarehouse.dim_transportista(sk_transportista_id)
 );
 
 -- Insertar datos en dimensiones
